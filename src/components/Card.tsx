@@ -1,5 +1,4 @@
-import React from "react"
-import type { Blog } from "../services"
+import type { Blog } from "../services/api"
 
 interface CardProps {
   blog: Blog

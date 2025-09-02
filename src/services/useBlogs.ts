@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { blogService, type Blog } from "./api"
 
 export interface UseBlogsReturn {
@@ -54,7 +54,7 @@ export const useBlogById = (id: string): UseBlogByIdReturn => {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchBlog = async () => {
+  const fetchBlog = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -69,13 +69,13 @@ export const useBlogById = (id: string): UseBlogByIdReturn => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [id])
 
   useEffect(() => {
     if (id) {
       fetchBlog()
     }
-  }, [id])
+  }, [id, fetchBlog])
 
   return {
     blog,
