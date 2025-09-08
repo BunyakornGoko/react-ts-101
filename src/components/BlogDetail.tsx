@@ -1,29 +1,9 @@
-import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
-import { blogService, type Blog } from "../services/api"
+import { useBlogById } from "../services/useBlogs"
 
 function BlogDetail() {
   const { id } = useParams<{ id: string }>()
-  const [blog, setBlog] = useState<Blog | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (id) {
-      setLoading(true)
-      setError(null)
-      blogService
-        .getBlogById(id)
-        .then((blogData) => {
-          setBlog(blogData)
-          setLoading(false)
-        })
-        .catch((err) => {
-          setError(err instanceof Error ? err.message : "Failed to fetch blog")
-          setLoading(false)
-        })
-    }
-  }, [id])
+  const { blog, loading, error } = useBlogById(id || "")
 
   if (loading) {
     return (
